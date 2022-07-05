@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block nav %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url "create" %}">Create product</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url "update_product" product.pk %}">Edit</a>
+    </li>
+    <li class="nav-item">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productDeleteModal">
+            Delete
+        </button>
+    </li>
+{% endblock %}
+
+{% block content %}
+
+    <p>
+        Product: {{ product.name }}
+    </p>
+    <p>
+        Description: {{ product.description }}
+    </p>
+    <p>
+        Category: {{ product.category }}
+    </p>
+    <p>
+        Remainder: {{ product.remainder }}
+    </p>
+    <p>
+        Price: {{ product.price }}
+    </p>
+
+    <a href="{% url "index" %}">To Main</a>
+
+       <div class="modal fade" id="productDeleteModal" tabindex="-1" aria-labelledby="productDeleteModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productDeleteModal">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete the product {{ product.name }}?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <form action="{% url "delete_product" product.pk %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal" >Yes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
