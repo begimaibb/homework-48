@@ -1,0 +1,68 @@
+[
+{
+    "model": "webapp.product",
+    "pk": 1,
+    "fields": {
+        "name": "Belaya Reka Milk",
+        "description": "Milk of Belaya Reka, 1 L",
+        "category": "dairy",
+        "remainder": 100,
+        "price": "50.00"
+    }
+},
+{
+    "model": "webapp.product",
+    "pk": 2,
+    "fields": {
+        "name": "Aqua Life Lemonade",
+        "description": "Aqua Life Lemonade, 1 L",
+        "category": "soft_drinks",
+        "remainder": 200,
+        "price": "140.00"
+    }
+},
+{
+    "model": "webapp.product",
+    "pk": 3,
+    "fields": {
+        "name": "Zhivoi Hleb",
+        "description": "Bread by Organic, 350 gr",
+        "category": "other",
+        "remainder": 20,
+        "price": "67.00"
+    }
+},
+{
+    "model": "webapp.product",
+    "pk": 4,
+    "fields": {
+        "name": "Raffaello",
+        "description": "a chocolate by Ferrero, 100 gr",
+        "category": "other",
+        "remainder": 200,
+        "price": "250.00"
+    }
+},
+{
+    "model": "webapp.product",
+    "pk": 5,
+    "fields": {
+        "name": "Banana",
+        "description": "Imported bananas, 1 kg",
+        "category": "groceries",
+        "remainder": 1000,
+        "price": "120.00"
+    }
+},
+{
+    "model": "webapp.product",
+    "pk": 7,
+    "fields": {
+        "name": "Yashkino waffles",
+        "description": "Waffles, 300 gr",
+        "category": "other",
+        "remainder": 50,
+        "price": "70.00"
+    }
+}
+]
