@@ -1,6 +1,6 @@
 import re
 from django import forms
-from webapp.models import Product
+from webapp.models import Product, CartProduct, Order
 from django.core.exceptions import ValidationError
 from django.forms import widgets
 
@@ -39,8 +39,21 @@ class ProductDeleteForm(forms.ModelForm):
         model = Product
         fields = ["name"]
 
-    def clean_title(self):
+    def clean_title(sellf):
         name = self.cleaned_data.get("name")
         if self.instance.name != name:
             raise ValidationError("Names do not match")
         return name
+
+
+class CartProduct(forms.ModelForm):
+    class Meta:
+        model = CartProduct
+        fields = ["product", "quantity"]
+
+
+class Order(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ["products", "quantities", "username", "phone", "address"]
+

@@ -90,3 +90,4 @@ class DeleteProduct(DeleteView):
             return self.delete(request, *args, **kwargs)
         else:
             return self.get(request, *args, **kwargs)
+
