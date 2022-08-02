@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "products/base.html" %}
 {% load static %}
 {% block nav %}
     <li class="nav-item">
@@ -13,10 +13,14 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">{{ product.name }}, {{ product.price }}, {{ product.category }}</h5>
-                        <a href="{% url "product_view" product.pk %}" class="card-link">More</a>
+                        <a href="{% url "product_view" product.pk %}"> <i class="bi bi-plus-square" style="font-size:30px"></i> </a>
+                        <a href=""> <i class="bi bi-cart-plus" style="font-size:30px"></i> </a>
                     </div>
                 </div>
             </div>
         {% endfor %}
+    {% if is_paginated %}
+        {% include "partial/pagination.html" %}
+    {% endif %}
     </div>
 {% endblock %}
