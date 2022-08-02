@@ -1,13 +1,46 @@
+import re
 from django import forms
+from webapp.models import Product
+from django.core.exceptions import ValidationError
 from django.forms import widgets
 
 
-class ProductForm(forms.Form):
-    category_choices = [('other', 'Other'), ('dairy', 'Dairy'), ('soft_drinks', 'Soft Drinks'),
-                        ('groceries', 'Groceries')]
-    name = forms.CharField(max_length=100, required=True, label='Name')
-    description = forms.CharField(max_length=2000, required=False, label='Description',
-                                  widget=widgets.Textarea(attrs={"cols": 40, "rows": 3}))
-    category = forms.CharField(label='Category', widget=forms.Select(choices=category_choices))
-    remainder = forms.IntegerField(min_value=0, required=True, label='Remainder')
-    price = forms.DecimalField(required=True, label='Price')
+class UserProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ["name", "description", "category", "remainder", "price"]
+
+
+class ProductForm(forms.ModelForm):
+
+    class Meta:
+        model = Product
+        fields = ["name", "description", "category", "remainder", "price"]
+        widgets = {
+            "category": widgets.RadioSelect
+        }
+
+    def clean(self):
+        name = self.cleaned_data.get("name")
+        description = self.cleaned_data.get("description")
+        if not re.match("^[a-zA-Zа-яА-Я\s]+$", name):
+            self.add_error("name", ValidationError("The name should include only letters"))
+        if not re.match("^[a-zA-Zа-яА-Я\s]+$", description):
+            self.add_error("description", ValidationError("The description should include only letters"))
+        return super().clean()
+
+
+class SearchForm(forms.Form):
+    search = forms.CharField(max_length=50, required=False, label='Find')
+
+
+class ProductDeleteForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ["name"]
+
+    def clean_title(self):
+        name = self.cleaned_data.get("name")
+        if self.instance.name != name:
+            raise ValidationError("Names do not match")
+        return name

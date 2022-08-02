@@ -12,7 +12,6 @@ class Product(models.Model):
     remainder = models.IntegerField(null=False, blank=False, verbose_name="Remainder")
     price = models.DecimalField(max_digits=7, decimal_places=2, null=False, blank=False, verbose_name="Price")
 
-
     def __str__(self):
         return f"{self.id}. {self.name}, {self.description} {self.category} {self.remainder} {self.price}"
 
@@ -20,3 +19,16 @@ class Product(models.Model):
         db_table = "products"
         verbose_name = "Product"
         verbose_name_plural = "Products"
+
+
+class BasketProduct(models.Model):
+    product = models.ForeignKey("webapp.Product", on_delete=models.CASCADE, related_name="product")
+    quantity = models.IntegerField(null=False, blank=False, verbose_name="Quantity")
+
+    def __str__(self):
+        return f"{self.id}. {self.product} {self.quantity}"
+
+    class Meta:
+        db_table = "basketproducts"
+        verbose_name = "BasketProduct"
+        verbose_name_plural = "BasketProducts"
