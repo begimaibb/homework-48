@@ -13,4 +13,3 @@ class BasketAdd:
             return
         if BasketProduct.objects.filter(product=product).exists():
             basket + 1
-        if
