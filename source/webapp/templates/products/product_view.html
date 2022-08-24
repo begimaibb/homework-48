@@ -1,10 +1,10 @@
-{% extends "products/base.html" %}
+{% extends "products/../base.html" %}
 {% block nav %}
     <li class="nav-item">
-        <a class="nav-link" href="{% url "create" %}">Create product</a>
+        <a class="nav-link" href="{% url "webapp:create" %}">Create product</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{% url "update_product" product.pk %}">Edit</a>
+        <a class="nav-link" href="{% url "webapp:update_product" product.pk %}">Edit</a>
     </li>
     <li class="nav-item">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productDeleteModal">
@@ -31,7 +31,7 @@
         Price: {{ product.price }}
     </p>
 
-    <a href="{% url "index" %}">To Main</a>
+    <a href="{% url "webapp:index" %}">To Main</a>
 
        <div class="modal fade" id="productDeleteModal" tabindex="-1" aria-labelledby="productDeleteModalLabel"
          aria-hidden="true">
@@ -46,7 +46,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <form action="{% url "delete_product" product.pk %}" method="post">
+                    <form action="{% url "webapp:delete_product" product.pk %}" method="post">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal" >Yes</button>
                     </form>
