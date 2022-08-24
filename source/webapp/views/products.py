@@ -1,13 +1,14 @@
 from django.db.models import Q
 from django.shortcuts import  redirect, get_object_or_404
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 # Create your views here.
 from django.utils.http import urlencode
 
-from webapp.forms import ProductForm, SearchForm, UserProductForm, ProductDeleteForm
+from webapp.forms import ProductForm, SearchForm
 from webapp.models import Product
 from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView
+from webapp.views.base_view import SearchView
 
 
 class IndexView(ListView):
@@ -15,7 +16,7 @@ class IndexView(ListView):
     template_name = "products/index.html"
     context_object_name = "products"
     ordering = 'category', 'name'
-    paginate_by = 5
+    paginate_by = 6
 
     def get(self, request, *args, **kwargs):
         self.form = self.get_search_form()
@@ -23,9 +24,7 @@ class IndexView(ListView):
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
-        if self.search_value:
-            return Product.objects.filter(Q(name__icontains=self.search_value) | Q(description__icontains=self.search_value))
-        return Product.objects.all()
+        return super().get_queryset().filter(remainder__gt=0)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=object_list, **kwargs)
@@ -45,49 +44,31 @@ class IndexView(ListView):
 
 
 class ProductView(DetailView):
-    template_name = "products/product_view.html"
     model = Product
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # id = self.object.id
-        # print(id)
-        # context['tasks'] = Task.objects.filter(product_id=id)
-        return context
+    template_name = 'products/product_view.html'
+    queryset = Product.objects.filter(remainder__gt=0)
 
 
 class CreateProduct(CreateView):
+    model = Product
     form_class = ProductForm
-    template_name = "products/create.html"
+    template_name = 'products/create.html'
 
-    def form_valid(self, form):
-        product = form.save(commit=False)
-        product.save()
-        form.save_m2m()
-        return redirect("product_view", pk=product.pk)
+    def get_success_url(self):
+        return reverse('webapp:product_view', kwargs={'pk': self.object.pk})
 
 
 class UpdateProduct(UpdateView):
-    form_class = ProductForm
-    template_name = "products/update.html"
     model = Product
+    form_class = ProductForm
+    template_name = 'products/update.html'
 
-    def get_form_class(self):
-        if self.request.GET.get("is_admin"):
-            return ProductForm
-        return UserProductForm
+    def get_success_url(self):
+        return reverse('webapp:product_view', kwargs={'pk': self.object.pk})
 
 
 class DeleteProduct(DeleteView):
     model = Product
-    template_name = "products/delete.html"
-    success_url = reverse_lazy('index')
-    form_class = ProductDeleteForm
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(data=request.POST, instance=self.get_object())
-        if form.is_valid():
-            return self.delete(request, *args, **kwargs)
-        else:
-            return self.get(request, *args, **kwargs)
+    template_name = 'products/delete.html'
+    success_url = reverse_lazy('webapp:index')
 
