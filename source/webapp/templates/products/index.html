@@ -1,22 +1,26 @@
-{% extends "products/base.html" %}
+{% extends "products/../base.html" %}
 {% load static %}
 {% block nav %}
     <li class="nav-item">
-        <a class="nav-link" href="{% url 'cart_product_view' %}"> <i class="bi bi-cart-plus" style="font-size:50px"></i> </a>
-        <a class="nav-link" href="{% url "create" %}">Create product</a>
+        <a class="nav-link" href="{% url 'webapp:cart_view' %}"> <i class="bi bi-cart-plus" style="font-size:50px"></i> </a>
+        <a class="nav-link" href="{% url "webapp:create" %}">Create product</a>
     </li>
 {% endblock %}
 {% block content %}
     <h1>Product List</h1>
+    <div class="my-3">{% include 'partial/search.html' %}</div>
     <div class="row">
         {% for product in products %}
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">{{ product.name }}, {{ product.price }}, {{ product.category }}</h5>
-                        <a href="{% url "product_view" product.pk %}"> <i class="bi bi-plus-square" style="font-size:30px"></i> </a>
-                        <a href="{% url 'create_cart_product' product.pk %}"> <i class="bi bi-cart-plus" style="font-size:30px"></i> </a>
+                    <h5 class="card-title"><a
+                                href="{% url "webapp:product_view" product.pk %}">{{ product.name }}</a></h5>
+                         <p class="card-text">Category: {{ product.get_category_display }}</p>
+                         <p class="card-text">{{ product.remainder }} are left with {{ product.price }} KGS</p>
+                        <a href="{% url "webapp:product_view" product.pk %}"> <i class="bi bi-plus-square" style="font-size:30px"></i> </a>
                     </div>
+                    {% include "partial/cart_add_form.html" %}
                 </div>
             </div>
         {% endfor %}

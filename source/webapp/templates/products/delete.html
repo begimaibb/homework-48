@@ -1,4 +1,4 @@
-{% extends "products/base.html" %}
+{% extends "products/../base.html" %}
 {% block title %}Delete Product{% endblock %}
 
 {% block content %}
@@ -7,5 +7,5 @@
         {% csrf_token %}
         {% include "partial/form.html" with button_text="Delete" %}
     </form>
-    <a href="{% url "product_view" product.pk %}">Back</a>
+    <a href="{% url "webapp:product_view" product.pk %}">Back</a>
 {% endblock %}
