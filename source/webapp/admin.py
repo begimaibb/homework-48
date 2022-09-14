@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from webapp.models import Product, Cart, Order
+from webapp.models import Product
 
 
 class ProductAdmin(admin.ModelAdmin):

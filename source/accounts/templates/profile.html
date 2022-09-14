@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock %}
+{% block nav %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'accounts:change_profile' user_obj.pk %}">Update</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'accounts:change_password' %}">Change password</a>
+    </li>
+{% endblock %}
+{% block content %}
+    <div class="card flex-row mt-3">
+        {% if user_obj.profile.avatar %}
+            <img src="{{ user.profile.avatar.url }}" class="card-img-top w-25" alt="...">
+        {% endif %}
+        <div class="card-body ms-5">
+            <h5 class="card-title">Username: {{ user_obj.username }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Name: {{ user_obj.first_name }}</h6>
+            <h6 class="card-subtitle mb-2 text-muted">Last name: {{ user_obj.last_name }}</h6>
+            <h6 class="card-subtitle mb-2 text-muted">E-mail: {{ user_obj.email }}</h6>
+        </div>
+    </div>
+    {% for order in user_obj.orders.all %}
+            -------------------------------
+            {% for order_product in order.order_products.all %}
+                {{ order_product.product.name }} {{ order_product.qty }} {{ order_product.product.price }} {{ order_product.get_sum }}
+                <br>
+
+            {% endfor %}
+            total : {{ order.get_total }}
+        {% endfor %}
+{% endblock %}

@@ -1,6 +1,6 @@
 import re
 from django import forms
-from webapp.models import Product, Cart, Order
+from webapp.models import Product, Order
 
 
 class SearchForm(forms.Form):
@@ -11,12 +11,6 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         exclude = []
-
-
-class CartForm(forms.ModelForm):
-    class Meta:
-        model = Cart
-        fields = ["quantity"]
 
 
 class OrderForm(forms.ModelForm):
